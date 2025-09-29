@@ -5,7 +5,7 @@ import routes from "./routes/index.js";
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://e-commerce-nine-gray.vercel.app/",
+  "https://e-commerce-nine-gray.vercel.app",
 ];
 
 const PORT = process.env.PORT || 3333;
