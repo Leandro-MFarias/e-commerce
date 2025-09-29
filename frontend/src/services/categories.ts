@@ -15,7 +15,7 @@ export async function getCategories() {
 
 export async function createCategory(category: string) {
   try {
-    const res = await api.post("/categories/", category);
+    const res = await api.post("/categories/", { name: category });
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
