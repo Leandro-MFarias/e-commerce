@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 
 const isProduction = process.env.NODE_ENV === "production"
-console.log("TESTE: ",process.env.NODE_ENV);
 
 function getSecret() {
   if (!process.env.JWT_SECRET) {
