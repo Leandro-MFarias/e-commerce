@@ -1,19 +1,10 @@
-"use client";
-
 import { Heart, ShoppingCart } from "lucide-react";
 import { NavigationBar } from "./navigation-bar";
-import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useUserStore } from "@/store/user";
+// import Link from "next/link";
+import { useState } from "react";
 
 export function Header() {
-  const { user, getUser, logout } = useUserStore();
-  const [logoutOpen, setLogoutOpen] = useState(false);
-
-  useEffect(() => {
-    if (!user) return;
-    getUser();
-  }, []);
+  // const [logoutOpen, setLogoutOpen] = useState(false);
 
   return (
     <header className="space-y-4 border-b border-orange-500 py-3 pt-10">
@@ -26,14 +17,14 @@ export function Header() {
             className="text-muted-foreground w-[80%] rounded-sm bg-white px-4 py-2 outline-orange-500 focus:outline-2"
           />
           <div>
-            {user ? (
+            {/* {user ? (
               <div className="relative flex">
                 <button
                   className="cursor-pointer transition duration-150 ease-in hover:scale-105"
                   onFocus={() => setLogoutOpen(true)}
                   onBlur={() => setLogoutOpen(false)}
                 >
-                  {user.fullname}
+                  
                 </button>
                 <div
                   onMouseDown={(e) => e.preventDefault()}
@@ -75,7 +66,7 @@ export function Header() {
                   </button>
                 </Link>
               </div>
-            )}
+            )} */}
           </div>
         </div>
 

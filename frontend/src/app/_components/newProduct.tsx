@@ -2,7 +2,7 @@
 
 import { Controller, ControllerRenderProps, useForm } from "react-hook-form";
 import { MoneyInput } from "./money-input";
-import { productSchema, ProductSchema } from "../types/productSchema";
+import { productSchema, ProductSchema } from "../../types/productSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Command,
@@ -16,8 +16,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 import { uploadImage } from "@/supabase/storage/upload";
-import { createProduct } from "@/services/createProduct";
-import { getCategories } from "@/services/getCategories";
+import { createProduct } from "@/services/products";
+import { getCategories } from "@/services/categories";
 import { useRouter } from "next/navigation";
 import { useProductsStore } from "@/store/products";
 
@@ -29,7 +29,7 @@ interface Categories {
 export function NewProduct() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [categories, setCategories] = useState<Categories[]>([]);
-  const { getProducts } = useProductsStore()
+  const { getProducts } = useProductsStore();
   const router = useRouter();
 
   const {
@@ -94,7 +94,7 @@ export function NewProduct() {
       const result = await createProduct(payload);
       toast.success(`${result.message}`);
 
-      await getProducts(true)
+      await getProducts(true);
 
       router.push("/admin-page");
     } catch (error: unknown) {
@@ -279,11 +279,13 @@ export function NewProduct() {
 
       <button
         type="submit"
-        className="flex w-full cursor-pointer justify-center items-center space-x-4 rounded-md bg-orange-600 py-3 text-lg font-bold transition duration-150 ease-in hover:bg-orange-500"
+        className="flex w-full cursor-pointer items-center justify-center space-x-4 rounded-md bg-orange-600 py-3 text-lg font-bold transition duration-150 ease-in hover:bg-orange-500"
         disabled={isSubmitting}
       >
         <p>{isSubmitting ? "Adicionando.." : "Adicionar"}</p>
-        <LoaderCircle className={`${isSubmitting ? "block animate-spin" : "hidden"}`} />
+        <LoaderCircle
+          className={`${isSubmitting ? "block animate-spin" : "hidden"}`}
+        />
       </button>
     </form>
   );

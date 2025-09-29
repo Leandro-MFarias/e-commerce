@@ -1,7 +1,7 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { Product } from "../../types/product";
+import { Product } from "../../../types/product";
 import { DataTable } from "./datatable";
 import { Button } from "@/components/ui/button";
 import { ArrowUpDown, SquarePen, Trash2 } from "lucide-react";

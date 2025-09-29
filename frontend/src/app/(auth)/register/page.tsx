@@ -1,8 +1,7 @@
 "use client";
 
-import { RegisterSchema, registerSchema } from "@/app/types/registerSchema";
+import { RegisterSchema, registerSchema } from "@/types/registerSchema";
 import { createAccount } from "@/services/auth";
-import { useUserStore } from "@/store/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ChevronLeft,
@@ -18,8 +17,6 @@ import { useForm } from "react-hook-form";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const { getUser } = useUserStore();
-
   const router = useRouter();
 
   const {
@@ -41,7 +38,6 @@ export default function Login() {
         return;
       }
 
-      getUser();
       router.push("/");
     } catch (error) {
       console.log(error);

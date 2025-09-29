@@ -1,4 +1,4 @@
-import { fetchProducts } from "@/services/fetchProducts";
+import { fetchProducts } from "@/services/products";
 import { create } from "zustand";
 
 type Product = {

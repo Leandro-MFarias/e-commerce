@@ -1,5 +1,5 @@
-import { NewProduct } from "@/app/components/newProduct";
-import { SideBar } from "@/app/components/sidebar";
+import { NewProduct } from "@/app/_components/newProduct";
+import { SideBar } from "@/app/_components/sidebar";
 
 export default function NewProductPage() {
   return (

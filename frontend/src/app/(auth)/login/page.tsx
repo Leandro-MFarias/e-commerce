@@ -1,9 +1,8 @@
 "use client";
 
-import { ForgotPassword } from "@/app/components/forgotPassword";
-import { LoginSchema, loginSchema } from "@/app/types/loginSchema";
+import { ForgotPassword } from "@/app/_components/forgotPassword";
+import { LoginSchema, loginSchema } from "@/types/loginSchema";
 import { signIn } from "@/services/auth";
-import { useUserStore } from "@/store/user";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ChevronLeft,
@@ -20,8 +19,7 @@ import { useForm } from "react-hook-form";
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const { getUser } = useUserStore()
-  
+
   const router = useRouter();
 
   const {
@@ -45,7 +43,6 @@ export default function Login() {
         }
         return;
       }
-      getUser()
       router.push("/");
     } catch (error) {
       console.log(error);
@@ -134,13 +131,12 @@ export default function Login() {
             </button>
 
             <button
-              type="button"  
+              type="button"
               onClick={() => setIsOpen(true)}
-              className="text-end text-sm font-semibold text-zinc-300 cursor-pointer hover:text-white"
+              className="cursor-pointer text-end text-sm font-semibold text-zinc-300 hover:text-white"
             >
               Esqueceu sua senha?
             </button>
-
           </form>
 
           {/* LINHAS */}
@@ -166,7 +162,7 @@ export default function Login() {
 
         <footer></footer>
       </div>
-      <ForgotPassword  isOpen={isOpen} setIsOpen={setIsOpen} />
+      <ForgotPassword isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 }

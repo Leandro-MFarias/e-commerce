@@ -9,7 +9,6 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useNavPage } from "@/store/nav";
-import { useUserStore } from "@/store/user";
 import { DoorOpen, MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -18,7 +17,6 @@ import { NewCategoryForm } from "./newCategoryForm";
 
 export function SideBar() {
   const [ isOpen, setIsOpen ] = useState(false)
-  const { logout } = useUserStore();
   const pathname = usePathname();
   const { page, changePage } = useNavPage();
 
@@ -66,7 +64,7 @@ export function SideBar() {
         </div>
 
         <button
-          onClick={() => logout()}
+          // onClick={() => logout()}
           className="flex cursor-pointer items-center space-x-2 transition-all duration-150 ease-in hover:-translate-y-1"
         >
           <DoorOpen />
@@ -113,7 +111,7 @@ export function SideBar() {
             </div>
           </SheetHeader>
           <button
-            onClick={() => logout()}
+            // onClick={() => logout()}
             className="flex cursor-pointer items-center space-x-2 pl-4 text-xl transition-all duration-150 ease-in hover:-translate-y-1"
           >
             <DoorOpen />

@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { createCategory } from "@/services/createCategory";
+import { createCategory } from "@/services/categories";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";

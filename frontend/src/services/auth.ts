@@ -1,10 +1,10 @@
-import { LoginSchema } from "@/app/types/loginSchema";
+import { LoginSchema } from "@/types/loginSchema";
 import { api } from "./api";
-import { RegisterSchema } from "@/app/types/registerSchema";
-import { ResetPasswordData } from "@/app/types/resetPasswordSchema";
+import { RegisterSchema } from "@/types/registerSchema";
+import { ResetPasswordData } from "@/types/resetPasswordSchema";
 
 export async function createAccount(data: RegisterSchema) {
-  const res = await fetch(`${api}/register`, {
+  const res = await fetch(`${api}/auth/register`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -17,7 +17,7 @@ export async function createAccount(data: RegisterSchema) {
 }
 
 export async function signIn(data: LoginSchema) {
-  const res = await fetch(`${api}/login`, {
+  const res = await fetch(`${api}/auth/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -29,7 +29,7 @@ export async function signIn(data: LoginSchema) {
 }
 
 export async function logout() {
-  const res = await fetch(`${api}/logout`, {
+  const res = await fetch(`${api}/auth/logout`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export async function logout() {
 }
 
 export async function forgotPassword(email: string) {
-  const res = await fetch(`${api}/forgot-password`, {
+  const res = await fetch(`${api}/auth/forgot-password`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -60,7 +60,7 @@ export async function forgotPassword(email: string) {
 }
 
 export async function resetPassword(data: ResetPasswordData) {
-  const res = await fetch(`${api}/reset-password`, {
+  const res = await fetch(`${api}/auth/reset-password`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -75,5 +75,5 @@ export async function resetPassword(data: ResetPasswordData) {
     throw new Error(result.message);
   }
 
-  return result
+  return result;
 }

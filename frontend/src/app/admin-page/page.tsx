@@ -1,5 +1,5 @@
-import { SideBar } from "../components/sidebar";
-import { ProducsDataTable } from "../components/table/products-datatable";
+import { SideBar } from "../_components/sidebar";
+import { ProducsDataTable } from "../_components/table/products-datatable";
 
 export default async function AdminPage() {
   return (

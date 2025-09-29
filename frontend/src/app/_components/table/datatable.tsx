@@ -24,7 +24,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { normalizeString } from "@/utils/normalizeString";
 import { useProductsStore } from "@/store/products";
-import { Product } from "@/app/types/product";
+import { Product } from "@/types/product";
 import { Loader2 } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
@@ -119,7 +119,7 @@ export function DataTable<TData, TValue>({
               <TableRow className="w-full">
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 flex items-cente justify-center w-full"
+                  className="items-cente flex h-24 w-full justify-center"
                 >
                   <Loader2 className="animate-spin" />
                 </TableCell>
