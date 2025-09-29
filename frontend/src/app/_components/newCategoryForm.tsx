@@ -6,10 +6,10 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { createCategory } from "@/services/categories";
+import { useNewCategory } from "@/hooks/categories";
+
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { LoaderCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { toast } from "sonner";
 
@@ -20,8 +20,8 @@ interface DialogProps {
 
 export function NewCategoryForm({ isOpen, setIsOpen }: DialogProps) {
   const [category, setCategory] = useState<string>();
+  const { mutateAsync: createCategory } = useNewCategory();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const router = useRouter()
 
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     setCategory(e.target.value);
@@ -30,11 +30,11 @@ export function NewCategoryForm({ isOpen, setIsOpen }: DialogProps) {
   async function handleForm(e: FormEvent) {
     e.preventDefault();
     if (!category) return;
+    
     try {
       setIsSubmitting(true);
-      const response = await createCategory(category);
-      toast.success(`${response.message}`);
-      router.push("/admin-page")
+      const result = await createCategory(category);
+      toast.success(`${result.message}`);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -43,7 +43,7 @@ export function NewCategoryForm({ isOpen, setIsOpen }: DialogProps) {
       }
     } finally {
       setIsSubmitting(false);
-      setIsOpen(false)
+      setIsOpen(false);
     }
   }
 

@@ -15,7 +15,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-export default function Login() {
+export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 

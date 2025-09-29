@@ -2,7 +2,6 @@
 
 import { ForgotPassword } from "@/app/_components/forgotPassword";
 import { LoginSchema, loginSchema } from "@/types/loginSchema";
-import { signIn } from "@/services/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ChevronLeft,
@@ -12,15 +11,14 @@ import {
   SquareArrowRight,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useLogin } from "@/hooks/user-auth";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
-  const router = useRouter();
+  const { mutateAsync: login } = useLogin();
 
   const {
     register,
@@ -33,19 +31,15 @@ export default function Login() {
 
   async function handleForm(data: LoginSchema) {
     try {
-      const response = await signIn(data);
-      const result = await response.json();
-      if (!response.ok) {
-        if (result.message.includes("Usuário")) {
-          setError("email", { message: result.message });
-        } else if (result.message.includes("Senha")) {
-          setError("password", { message: result.message });
-        }
-        return;
-      }
-      router.push("/");
+      await login(data);
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        if (error.message.includes("Usuário")) {
+          setError("email", { message: error.message });
+        } else if (error.message.includes("Senha")) {
+          setError("password", { message: error.message });
+        }
+      }
     }
   }
 

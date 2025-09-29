@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/ui/sonner";
+import { CoreProvider } from "./_components/core-provider";
 
-const poppins = Poppins ({
+const poppins = Poppins({
   weight: ["300", "400", "500", "600", "800"],
   subsets: ["latin"],
-})
+});
 
 export const metadata: Metadata = {
   title: "Reload Store",
@@ -21,10 +22,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${poppins.className} antialiased dark bg-zinc-900 text-white`}
+        className={`${poppins.className} dark bg-zinc-900 text-white antialiased`}
         suppressHydrationWarning
       >
-        {children}
+        <CoreProvider>{children}</CoreProvider>
         <Toaster />
       </body>
     </html>

@@ -1,1 +1,6 @@
-export const api = "https://e-commerce-gamer-ew6l.onrender.com/api"
+import axios from "axios"
+
+export const api = axios.create({
+    baseURL: "https://e-commerce-9nrq.onrender.com/api",
+    withCredentials: true,
+})

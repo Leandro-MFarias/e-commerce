@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowUpDown, SquarePen, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { formatPrice } from "@/utils/formatPrice";
+import { useProducts } from "@/hooks/product";
 
 const columns: ColumnDef<Product>[] = [
   {
@@ -119,7 +120,15 @@ const columns: ColumnDef<Product>[] = [
 ];
 
 export function ProducsDataTable() {
+  const { data: products, isPending, isFetching } = useProducts();
+
   return (
-    <DataTable columns={columns} searchFields={["name", "category", "stock"]} />
+    <DataTable
+      columns={columns}
+      data={products}
+      loading={isPending}
+      fetching={isFetching}
+      searchFields={["name", "category", "stock"]}
+    />
   );
 }

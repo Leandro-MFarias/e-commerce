@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   ColumnDef,
   flexRender,
@@ -23,31 +23,31 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { normalizeString } from "@/utils/normalizeString";
-import { useProductsStore } from "@/store/products";
 import { Product } from "@/types/product";
 import { Loader2 } from "lucide-react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
+  data: Product[];
+  loading: boolean;
+  fetching: boolean;
   searchFields?: string[];
   defaultSearch?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
+  data,
+  loading,
+  fetching,
   searchFields = [],
   defaultSearch = "",
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState(defaultSearch);
-  const { products, getProducts, loading } = useProductsStore();
-
-  useEffect(() => {
-    getProducts();
-  }, [getProducts]);
 
   const table = useReactTable({
-    data: products as TData[],
+    data: (data ?? []) as TData[],
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
@@ -153,6 +153,16 @@ export function DataTable<TData, TValue>({
                   </TableRow>
                 )}
               </>
+            )}
+            {fetching && (
+              <TableRow className="w-full">
+                <TableCell
+                  colSpan={columns.length}
+                  className="items-cente flex h-24 w-full justify-center"
+                >
+                  <Loader2 className="animate-spin" />
+                </TableCell>
+              </TableRow>
             )}
           </TableBody>
         </Table>

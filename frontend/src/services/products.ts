@@ -1,34 +1,27 @@
 import { ProductSchema } from "@/types/productSchema";
 import { api } from "./api";
+import axios from "axios";
 
 export async function createProduct(data: ProductSchema) {
-  const res = await fetch(`${api}/products/`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(data),
-  });
-
-  const result = await res.json();
-
-  if (!res.ok) {
-    throw new Error(result.message);
+  try {
+    const res = await api.post("/products/", data);
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data.message);
+    }
+    throw error;
   }
-
-  return result;
 }
 
 export async function fetchProducts() {
-  const res = await fetch(`${api}/products/`, {
-    method: "GET",
-    credentials: "include",
-  });
-
-  const result = await res.json();
-
-  if (!res.ok) throw new Error(result.message);
-
-  return result;
+  try {
+    const res = await api.get("/products/");
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data.message);
+    }
+    throw error;
+  }
 }

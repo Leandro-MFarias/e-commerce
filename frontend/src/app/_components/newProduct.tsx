@@ -10,27 +10,20 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Check, LoaderCircle } from "lucide-react";
+import { Check, Loader2, LoaderCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 import { uploadImage } from "@/supabase/storage/upload";
-import { createProduct } from "@/services/products";
-import { getCategories } from "@/services/categories";
-import { useRouter } from "next/navigation";
-import { useProductsStore } from "@/store/products";
-
-interface Categories {
-  id: string;
-  name: string;
-}
+import { useNewProduct } from "@/hooks/product";
+import { useCategories } from "@/hooks/categories";
+import { Category } from "@/types/category";
 
 export function NewProduct() {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [categories, setCategories] = useState<Categories[]>([]);
-  const { getProducts } = useProductsStore();
-  const router = useRouter();
+  const { data: categories, isLoading } = useCategories();
+  const { mutateAsync: createProduct } = useNewProduct();
 
   const {
     register,
@@ -48,19 +41,6 @@ export function NewProduct() {
       name: "",
     },
   });
-
-  useEffect(() => {
-    async function fetchCategories() {
-      try {
-        const response = await getCategories();
-        if (!response) return;
-        setCategories(response);
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchCategories();
-  }, []);
 
   async function handleForm(data: ProductSchema) {
     try {
@@ -93,10 +73,6 @@ export function NewProduct() {
 
       const result = await createProduct(payload);
       toast.success(`${result.message}`);
-
-      await getProducts(true);
-
-      router.push("/admin-page");
     } catch (error: unknown) {
       if (error instanceof Error) {
         toast.error(error.message);
@@ -169,8 +145,12 @@ export function NewProduct() {
                 <Command className="max-h-36 w-full rounded-sm border-2 border-zinc-400">
                   <CommandList>
                     <CommandGroup>
-                      {categories &&
-                        categories.map((category) => (
+                      {isLoading ? (
+                        <div className="flex items-center justify-center">
+                          <Loader2 className="animate-spin" />
+                        </div>
+                      ) : (
+                        categories.map((category: Category) => (
                           <CommandItem
                             key={category?.id}
                             value={category.id}
@@ -188,7 +168,8 @@ export function NewProduct() {
                             />
                             {category.name}
                           </CommandItem>
-                        ))}
+                        ))
+                      )}
                     </CommandGroup>
                   </CommandList>
                 </Command>

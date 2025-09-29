@@ -1,13 +1,14 @@
-import { api } from "./api"
+import axios from "axios";
+import { api } from "./api";
 
-export async function userInfo() {
-  const res = await fetch(`${api}/users/me`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-  })
-
-  return res.json()
+export async function getUser() {
+  try {
+    const res = await api.get("/users/me");
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data.message);
+    }
+    throw error;
+  }
 }

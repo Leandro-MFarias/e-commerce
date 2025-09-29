@@ -1,10 +1,15 @@
+"use client";
+
 import { Heart, ShoppingCart } from "lucide-react";
 import { NavigationBar } from "./navigation-bar";
-// import Link from "next/link";
+import Link from "next/link";
 import { useState } from "react";
+import { useUser, useLogout } from "@/hooks/user-auth";
 
 export function Header() {
-  // const [logoutOpen, setLogoutOpen] = useState(false);
+  const { data: user, isLoading } = useUser();
+  const { mutate: logout, isPending } = useLogout();
+  const [menuDrop, setMenuDrop] = useState(false);
 
   return (
     <header className="space-y-4 border-b border-orange-500 py-3 pt-10">
@@ -17,18 +22,20 @@ export function Header() {
             className="text-muted-foreground w-[80%] rounded-sm bg-white px-4 py-2 outline-orange-500 focus:outline-2"
           />
           <div>
-            {/* {user ? (
+            {isLoading ? (
+              <p>carregando...</p>
+            ) : user ? (
               <div className="relative flex">
                 <button
                   className="cursor-pointer transition duration-150 ease-in hover:scale-105"
-                  onFocus={() => setLogoutOpen(true)}
-                  onBlur={() => setLogoutOpen(false)}
+                  onFocus={() => setMenuDrop(true)}
+                  onBlur={() => setMenuDrop(false)}
                 >
-                  
+                  {user.fullname}
                 </button>
                 <div
                   onMouseDown={(e) => e.preventDefault()}
-                  className={`absolute -bottom-20 w-[100px] space-y-1 rounded-sm bg-neutral-700 py-0.5 pl-1 ${logoutOpen ? "block" : "hidden"}`}
+                  className={`absolute -bottom-20 w-[100px] space-y-1 rounded-sm bg-neutral-700 py-0.5 pl-1 ${menuDrop ? "block" : "hidden"}`}
                 >
                   <button
                     className={`cursor-pointer text-sm text-zinc-200 transition duration-150 ease-in hover:scale-105`}
@@ -47,6 +54,7 @@ export function Header() {
                   <button
                     className={`cursor-pointer text-sm text-zinc-200 transition duration-150 ease-in hover:scale-105`}
                     onClick={() => logout()}
+                    disabled={isPending}
                   >
                     Sair
                   </button>
@@ -66,7 +74,7 @@ export function Header() {
                   </button>
                 </Link>
               </div>
-            )} */}
+            )}
           </div>
         </div>
 
