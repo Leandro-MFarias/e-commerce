@@ -4,10 +4,11 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Product } from "../../../types/product";
 import { DataTable } from "./datatable";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown, SquarePen, Trash2 } from "lucide-react";
+import { ArrowUpDown } from "lucide-react";
 import Image from "next/image";
 import { formatPrice } from "@/utils/formatPrice";
 import { useProducts } from "@/hooks/product";
+import { ActionsProductCell } from "./actionsProductCell";
 
 const columns: ColumnDef<Product>[] = [
   {
@@ -98,24 +99,7 @@ const columns: ColumnDef<Product>[] = [
   },
   {
     header: "Ações",
-    cell: () => {
-      return (
-        <div className="flex items-center space-x-2">
-          <button
-            onClick={() => console.log("Helloooo")}
-            className="text-muted-foreground cursor-pointer transition duration-150 ease-in hover:scale-105 hover:text-white"
-          >
-            <SquarePen size={16} />
-          </button>
-          <button
-            onClick={() => console.log("Aiii")}
-            className="cursor-pointer text-red-500 transition duration-150 ease-in hover:scale-105"
-          >
-            <Trash2 size={16} />
-          </button>
-        </div>
-      );
-    },
+    cell: ({ row }) => <ActionsProductCell product={row.original} />,
   },
 ];
 

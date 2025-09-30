@@ -35,10 +35,7 @@ export async function uploadImage({ file, bucket, folder }: UploadProps) {
     return { media: "", error: "Imagem upload falhou" };
   }
 
-  const media = `${process.env
-    .NEXT_PUBLIC_SUPABASE_URL!}/storage/v1/object/public/${bucket}/${
-    data?.path
-    }`;
-  
+  const media = `${process.env.NEXT_PUBLIC_SUPABASE_URL!}/storage/v1/object/public/${bucket}/${data?.path}`;
+
   return { media, error: "" };
 }

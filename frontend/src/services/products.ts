@@ -1,8 +1,8 @@
-import { ProductSchema } from "@/types/productSchema";
 import { api } from "./api";
 import axios from "axios";
+import { ProductInput, ProductProp } from "@/types/product";
 
-export async function createProduct(data: ProductSchema) {
+export async function createProduct(data: ProductInput) {
   try {
     const res = await api.post("/products/", data);
     return res.data;
@@ -17,6 +17,30 @@ export async function createProduct(data: ProductSchema) {
 export async function fetchProducts() {
   try {
     const res = await api.get("/products/");
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data.message);
+    }
+    throw error;
+  }
+}
+
+export async function findProduct(productId: string) {
+  try {
+    const res = await api.get(`/products/${productId}`);
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data.message);
+    }
+    throw error;
+  }
+}
+
+export async function updateProduct({ productId, payload }: ProductProp) {
+  try {
+    const res = await api.put(`/products/${productId}`, payload);
     return res.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

@@ -23,3 +23,23 @@ export function useNewProduct() {
     },
   });
 }
+
+export function useFindProduct(productId: string) {
+  return useQuery({
+    queryKey: ["product", productId],
+    queryFn: () => productApi.findProduct(productId),
+  })
+}
+
+export function useUpdateProduct() {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: productApi.updateProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      router.push("/admin-page");
+    },
+  });
+}

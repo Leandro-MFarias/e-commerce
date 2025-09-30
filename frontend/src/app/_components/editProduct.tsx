@@ -2,7 +2,7 @@
 
 import { Controller, ControllerRenderProps, useForm } from "react-hook-form";
 import { MoneyInput } from "./money-input";
-import { productSchema, ProductSchema } from "@/types/productSchema";
+import { editProductSchema, EditProductSchema } from "@/types/productSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Command,
@@ -12,77 +12,57 @@ import {
 } from "@/components/ui/command";
 import { Check, Loader2, LoaderCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import Image from "next/image";
 import { toast } from "sonner";
 import { uploadImage } from "@/supabase/storage/upload";
-import { useNewProduct } from "@/hooks/product";
-import { useCategories } from "@/hooks/categories";
+import { useUpdateProduct } from "@/hooks/product";
 import { Category } from "@/types/category";
+import { Product } from "@/types/product";
+import { formatPrice } from "@/utils/formatPrice";
 
-export function NewProduct() {
+interface ProductEdit {
+  product: Product;
+  categories: Category[];
+}
+
+export function EditProduct({ product, categories }: ProductEdit) {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const { data: categories, isLoading } = useCategories();
-  const { mutateAsync: createProduct } = useNewProduct();
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const { mutateAsync: updateProduct } = useUpdateProduct();
+
   const {
     register,
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
-  } = useForm<ProductSchema>({
-    resolver: zodResolver(productSchema),
+  } = useForm<EditProductSchema>({
+    resolver: zodResolver(editProductSchema),
     defaultValues: {
-      categories: [],
-      price: 0,
-      stock: 1,
-      imageUrl: undefined,
-      description: "",
-      name: "",
+      name: product?.name,
+      description: product?.description,
+      price: product?.price / 100,
+      stock: product?.stock,
+      categories: (product.categories ?? []).map((cat) => cat.id),
+      imageUrl: product?.imageUrl,
     },
   });
 
-  async function handleForm(data: ProductSchema) {
-    try {
-      const fileList = data.imageUrl;
-      const file = fileList[0];
-      let imageUrl = "";
+  useEffect(() => {
+    setPreviewImage(product.imageUrl);
+  }, [product?.imageUrl]);
 
-      if (file instanceof File && file.size > 0) {
-        const { media, error } = await uploadImage({
-          file,
-          bucket: "products-image",
-          folder: "products",
-        });
-
-        if (error) {
-          return toast.error("Erro ao fazer o upload da imagem.");
-        }
-
-        imageUrl = media;
-      }
-
-      const payload = {
-        name: data.name,
-        description: data.description,
-        price: Math.round(Number(data.price) * 100),
-        stock: data.stock,
-        imageUrl,
-        categories: data.categories.map((category) => category),
-      };
-
-      const result = await createProduct(payload);
-      toast.success(`${result.message}`);
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        toast.error(error.message);
-      } else {
-        console.log("Erro inesperado!", error);
-      }
+  function handleShowImage(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+      const url = URL.createObjectURL(file);
+      setPreviewImage(url);
     }
   }
 
   function handleCategorySelect(
-    field: ControllerRenderProps<ProductSchema, "categories">,
+    field: ControllerRenderProps<EditProductSchema, "categories">,
     categoryValue: string,
   ) {
     const alreadySelected = field.value?.includes(categoryValue);
@@ -94,11 +74,39 @@ export function NewProduct() {
     );
   }
 
-  function handleShowImage(e: ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = URL.createObjectURL(file);
-      setPreviewImage(url);
+  async function handleForm(data: EditProductSchema) {
+    try {
+      let imageUrl = product.imageUrl.trim();
+
+      if (selectedFile) {
+        const { media, error } = await uploadImage({
+          file: selectedFile,
+          bucket: "products-image",
+          folder: "products",
+        });
+        if (error) {
+          return toast.error("ERRO ao fazer upload da imagem.");
+        }
+        imageUrl = media.trim();
+      }
+
+      const payload = {
+        name: data.name,
+        description: data.description,
+        price: Math.round(Number(data.price) * 100),
+        stock: data.stock,
+        imageUrl,
+        categories: data.categories,
+      };
+
+      const result = await updateProduct({ productId: product.id, payload });
+      toast.success(`${result.message}`);
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        console.log("Erro inesperado!", error);
+      }
     }
   }
 
@@ -144,31 +152,25 @@ export function NewProduct() {
                 <Command className="max-h-36 w-full rounded-sm border-2 border-zinc-400">
                   <CommandList>
                     <CommandGroup>
-                      {isLoading ? (
-                        <div className="flex items-center justify-center">
-                          <Loader2 className="animate-spin" />
-                        </div>
-                      ) : (
-                        categories.map((category: Category) => (
-                          <CommandItem
-                            key={category?.id}
-                            value={category.id}
-                            onSelect={() =>
-                              handleCategorySelect(field, category.id)
-                            }
-                          >
-                            <Check
-                              className={cn(
-                                "mr-2 h-4 w-4",
-                                field.value?.includes(category.id)
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
-                            {category.name}
-                          </CommandItem>
-                        ))
-                      )}
+                      {categories.map((category: Category) => (
+                        <CommandItem
+                          key={category?.id}
+                          value={category.id}
+                          onSelect={() =>
+                            handleCategorySelect(field, category.id)
+                          }
+                        >
+                          <Check
+                            className={cn(
+                              "mr-2 h-4 w-4",
+                              field.value?.includes(category.id)
+                                ? "opacity-100"
+                                : "opacity-0",
+                            )}
+                          />
+                          {category.name}
+                        </CommandItem>
+                      ))}
                     </CommandGroup>
                   </CommandList>
                 </Command>
@@ -186,11 +188,10 @@ export function NewProduct() {
               <Controller
                 control={control}
                 name="price"
-                render={({ field }) => (
+                render={({ field: { onChange, value } }) => (
                   <MoneyInput
-                    onValueChange={(values) =>
-                      field.onChange(Number(values.value))
-                    }
+                    value={value}
+                    onValueChange={(values) => onChange(Number(values.value))}
                     className="w-full rounded-sm border-2 border-zinc-400 px-2 py-2 text-zinc-300 outline-none"
                   />
                 )}
@@ -240,7 +241,6 @@ export function NewProduct() {
             <input
               type="file"
               accept="image"
-              {...register("imageUrl")}
               onChange={handleShowImage}
               className="absolute z-50 cursor-pointer opacity-0 **:w-full"
             />
@@ -297,21 +297,6 @@ export function NewProduct() {
 //     return; // também aborta se URL inválida
 //   }
 // }
-
-{
-  /* <Controller
-                control={control}
-                name="price"
-                render={({ field: { onChange, value } }) => (
-                  <MoneyInput
-                    value={formatPrice(value)}
-                    onValueChange={(values) => onChange(Number(values.value))}
-                    className="w-full rounded-sm border-2 border-zinc-400 px-2 py-2 text-zinc-300 outline-none"
-                  />
-                )}
-              /> 
-*/
-}
 
 // useEffect(() => {
 //   if (product?.imageUrl) {
