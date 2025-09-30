@@ -11,10 +11,10 @@ import { auth } from "../middleware/auth.js";
 
 const router = Router();
 
-router.get("/", getProductsController); // ✅
+router.get("/", getProductsController);
 router.get("/:id", getProductController);
 
-router.post("/", auth, isAdmin, craeteProductController); // ✅
+router.post("/", auth, isAdmin, craeteProductController);
 router.put("/:id", auth, isAdmin, updateProductController);
 router.delete("/:id", auth, isAdmin, deleteProductController);
 

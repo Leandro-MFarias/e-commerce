@@ -21,7 +21,6 @@ model User {
 
   orders    Order[]
   cartItems CartItem[]
-  favorites Favorite[]
 }
 
 model Category {
@@ -43,16 +42,6 @@ model Product {
   categories Category[]  @relation("ProductCategories")
   cartItems  CartItem[]
   orderItems OrderItem[]
-  favorites  Favorite[]
-}
-
-model Favorite {
-  id        String   @id @default(uuid())
-  user      User     @relation(fields: [userId], references: [id])
-  userId    String
-  product   Product  @relation(fields: [productId], references: [id])
-  productId String
-  createAt  DateTime @default(now())
 }
 
 model CartItem {
