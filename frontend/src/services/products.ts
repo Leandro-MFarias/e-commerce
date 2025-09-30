@@ -49,3 +49,15 @@ export async function updateProduct({ productId, payload }: ProductProp) {
     throw error;
   }
 }
+
+export async function deleteProduct(productId: string) {
+  try {
+    const res = await api.delete(`/products/${productId}`);
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data.message);
+    }
+    throw error;
+  }
+}

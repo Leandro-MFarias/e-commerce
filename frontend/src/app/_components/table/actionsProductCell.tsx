@@ -14,16 +14,30 @@ import { Product } from "@/types/product";
 import { SquarePen, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useDeleteProduct } from "../../../hooks/product";
+import { toast } from "sonner";
+import axios from "axios";
 
 export function ActionsProductCell({ product }: { product: Product }) {
   const [isOpen, setIsOpen] = useState(false);
+  const { mutateAsync: deleteItem } = useDeleteProduct();
   const router = useRouter();
 
   function handleEdit() {
     router.push(`/admin-page/edit-product/${product.id}`);
   }
 
-  function handleDelete() {}
+  async function handleDelete() {
+    try {
+      if (!product.id) return;
+      const response = await deleteItem(product.id);
+      toast.success(response.message);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message);
+      }
+    }
+  }
 
   return (
     <>

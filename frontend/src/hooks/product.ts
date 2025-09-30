@@ -28,7 +28,7 @@ export function useFindProduct(productId: string) {
   return useQuery({
     queryKey: ["product", productId],
     queryFn: () => productApi.findProduct(productId),
-  })
+  });
 }
 
 export function useUpdateProduct() {
@@ -40,6 +40,17 @@ export function useUpdateProduct() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
       router.push("/admin-page");
+    },
+  });
+}
+
+export function useDeleteProduct() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: productApi.deleteProduct,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
 }
