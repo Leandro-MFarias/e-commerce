@@ -31,6 +31,14 @@ export function useFindProduct(productId: string) {
   });
 }
 
+export function useSearchProduct(query: string) {
+  return useQuery({
+    queryKey: ["searchProducts", query],
+    queryFn: () => productApi.searchProducts(query),
+    enabled: query.length > 2,
+  })
+}
+
 export function useUpdateProduct() {
   const queryClient = useQueryClient();
   const router = useRouter();

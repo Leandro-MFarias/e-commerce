@@ -1,7 +1,15 @@
 import prisma from "../lib/prisma.js";
 
-export const findAll = () => {
+export const findAll = (search) => {
   return prisma.product.findMany({
+    where: search
+      ? {
+          name: {
+            contains: search,
+            mode: "insensitive",
+          },
+        }
+      : {},
     include: {
       categories: {
         select: {
@@ -10,6 +18,10 @@ export const findAll = () => {
         },
       },
     },
+    orderBy: {
+      name: "asc",
+    },
+    take: search ? 20 : undefined,
   });
 };
 
