@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingCart } from "lucide-react";
+import { Menu, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useUser, useLogout } from "@/hooks/user-auth";
@@ -8,6 +8,13 @@ import { useSearchProduct } from "@/hooks/product";
 import { Product } from "@/types/product";
 import Image from "next/image";
 import { formatPrice } from "@/utils/formatPrice";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from "@/components/ui/sheet";
 
 export function Header() {
   const { data: user, isLoading } = useUser();
@@ -15,6 +22,7 @@ export function Header() {
   const [search, setSearch] = useState("");
   const [menuDrop, setMenuDrop] = useState(false);
   const [searchMenu, setSearchMenu] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
   const { data: products } = useSearchProduct(search);
 
@@ -27,16 +35,18 @@ export function Header() {
   }
 
   return (
-    <header className="space-y-4 border-b border-orange-500 pb-6 pt-10">
-      <div className="flex items-center justify-between px-20">
+    <>
+      <header className="relative flex flex-col items-center justify-around space-y-3 border-b border-orange-500 px-4 pt-10 md:flex-row md:space-y-0 md:space-x-2 md:px-0 md:pb-6">
         <Link href={"/"}>
-          <h1 className="text-4xl font-bold text-orange-500">Reload Store</h1>
+          <h1 className="text-3xl font-bold text-orange-500 md:text-4xl">
+            Reload Store
+          </h1>
         </Link>
 
-        <div className="relative w-[60%]">
+        <div className="relative w-full md:w-[60%]">
           <input
             type="text"
-            className="w-[100%] rounded-sm border-2 border-orange-500 bg-white px-4 py-2 text-neutral-700 outline-none"
+            className="w-full rounded-sm border-2 border-orange-500 bg-white px-4 py-2 text-neutral-700 outline-none"
             placeholder="Procure seu jogo.."
             onFocus={() => setSearchMenu(true)}
             onBlur={() => setSearchMenu(false)}
@@ -48,7 +58,7 @@ export function Header() {
           >
             {products &&
               products.length > 0 &&
-              products.map((product: Product) => (
+              products.map((product: Product, index: number) => (
                 <div key={product.id} className="space-y-2">
                   <Link href={`/product/${product.id}`}>
                     <div className="flex w-full items-center space-x-4 pl-4">
@@ -65,13 +75,15 @@ export function Header() {
                       </div>
                     </div>
                   </Link>
-                  <div className={`h-[1px] w-full bg-zinc-300`} />
+                  <div
+                    className={`h-[1px] w-full bg-zinc-300 ${index === products.length - 1 && "hidden"}`}
+                  />
                 </div>
               ))}
           </div>
         </div>
 
-        <div className="flex items-center space-x-6">
+        <div className="hidden items-center space-x-6 md:flex">
           {isLoading ? (
             <p>carregando...</p>
           ) : user ? (
@@ -132,7 +144,48 @@ export function Header() {
             <ShoppingCart />
           </button>
         </div>
-      </div>
-    </header>
+
+        <Menu
+          className="absolute top-10 left-4 md:hidden"
+          onClick={() => setIsOpen(true)}
+        />
+        <button className="absolute top-10 right-4 md:hidden">
+          <ShoppingCart />
+        </button>
+      </header>
+      <Sheet open={isOpen} onOpenChange={setIsOpen}>
+        <SheetContent className="w-full px-2" side="top">
+          <SheetHeader>
+            <SheetTitle className="translate-y-3 text-lg">
+              Olá, {user?.fullname}
+            </SheetTitle>
+            <SheetDescription></SheetDescription>
+          </SheetHeader>
+          <div className="flex flex-col items-center space-y-4 pb-6 pl-5 font-bold">
+            <button
+              className={`cursor-pointer text-xl text-zinc-200 transition duration-150 ease-in hover:scale-105`}
+            >
+              Meus pedidos
+            </button>
+            {user?.role === "ADMIN" && (
+              <Link href={"/admin-page"}>
+                <button
+                  className={`cursor-pointer text-xl text-zinc-200 transition duration-150 ease-in hover:scale-105`}
+                >
+                  Admin Page
+                </button>
+              </Link>
+            )}
+            <button
+              className={`cursor-pointer text-xl text-zinc-200 transition duration-150 ease-in hover:scale-105`}
+              onClick={() => logout()}
+              disabled={isPending}
+            >
+              Sair
+            </button>
+          </div>
+        </SheetContent>
+      </Sheet>
+    </>
   );
 }
