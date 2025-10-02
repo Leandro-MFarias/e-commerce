@@ -7,10 +7,11 @@ export const findById = (id) => {
       id: true,
       fullname: true,
       role: true,
+      cartItems: {
+        select: {
+          id: true
+        }
+      }
     },
   });
 };
-
-export const getCartAmount = (id) => {
-  return prisma.cartItem.findUnique()
-}
