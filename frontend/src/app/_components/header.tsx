@@ -140,9 +140,14 @@ export function Header() {
 
           <div className="h-6 w-[1px] bg-zinc-500" />
 
-          <button>
-            <ShoppingBag />
-          </button>
+          <Link href={"/cart"}>
+            <button className="relative cursor-pointer transition duration-150 ease-in hover:scale-105">
+              <ShoppingBag />
+              <span className="absolute -top-2 -right-3 flex w-5 items-center justify-center rounded-full bg-red-600 text-sm font-semibold">
+                1
+              </span>
+            </button>
+          </Link>
         </div>
 
         <Menu
