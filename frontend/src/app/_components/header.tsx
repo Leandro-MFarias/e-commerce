@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu, ShoppingCart } from "lucide-react";
+import { Menu, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useUser, useLogout } from "@/hooks/user-auth";
@@ -46,7 +46,7 @@ export function Header() {
         <div className="relative w-full md:w-[60%]">
           <input
             type="text"
-            className="w-full rounded-sm border-2 border-orange-500 bg-white px-4 py-2 text-neutral-700 outline-none"
+            className="w-full rounded-sm border-2 border-orange-500 bg-zinc-100 px-4 py-2 text-neutral-700 outline-none"
             placeholder="Procure seu jogo.."
             onFocus={() => setSearchMenu(true)}
             onBlur={() => setSearchMenu(false)}
@@ -141,7 +141,7 @@ export function Header() {
           <div className="h-6 w-[1px] bg-zinc-500" />
 
           <button>
-            <ShoppingCart />
+            <ShoppingBag />
           </button>
         </div>
 
@@ -150,7 +150,7 @@ export function Header() {
           onClick={() => setIsOpen(true)}
         />
         <button className="absolute top-10 right-4 md:hidden">
-          <ShoppingCart />
+          <ShoppingBag />
         </button>
       </header>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>

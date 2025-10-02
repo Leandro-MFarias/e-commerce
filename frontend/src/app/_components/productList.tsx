@@ -4,7 +4,9 @@ import { useProducts, useProductsToShow } from "@/hooks/product";
 import { useCategoryId } from "@/store/category";
 import { Product } from "@/types/product";
 import { formatPrice } from "@/utils/formatPrice";
+import { Loader2, ShoppingCart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 export function ProductList() {
   const { id } = useCategoryId();
@@ -14,36 +16,52 @@ export function ProductList() {
 
   const { data: allProducts, isLoading } = useProducts({ enabled: !id });
 
-  if (isLoading || isLoadingCategory) return;
+  if (isLoading || isLoadingCategory) {
+    return (
+      <div className="flex h-[60vh] items-center justify-center">
+        <Loader2 className="animate-spin" size={60} />
+      </div>
+    );
+  }
 
   const products = id ? productToShow : allProducts;
 
   return (
-    <div className="mx-auto mt-10 grid max-w-[1320px] grid-cols-4 justify-items-center gap-6">
+    <div className="mx-auto mt-10 grid max-w-[1320px] justify-items-center gap-6 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4">
       {products?.map((product: Product) => (
         <div
           key={product.id}
-          className="shadow-dark flex h-[370px] w-80 flex-col space-y-6 rounded-lg bg-neutral-900 px-3 py-6"
+          className="shadow-dark relative flex h-[420px] w-80 flex-col space-y-6 rounded-lg border border-neutral-900 bg-neutral-900 px-3 py-6 transition duration-100 ease-in hover:border-neutral-600/70"
         >
-          <div className="flex-1 self-center">
-            <Image
-              src={product.imageUrl}
-              width={120}
-              height={120}
-              alt={product.name}
-              className="max-h-[160px] max-w-[130px] rounded-md"
-            />
-          </div>
-          <div className="space-y-2">
-            <p className="text-lg font-bold">{product.name}</p>
-            <p className="text-muted-foreground truncate">
-              {product.description}
-            </p>
-            <p>{formatPrice(product.price)}</p>
-            <button className="w-full rounded-md bg-orange-500 py-2 font-bold">
-              Comprar
-            </button>
-          </div>
+          <button className="absolute top-3 right-3 cursor-pointer transition duration-150 ease-in hover:scale-105 hover:text-orange-500">
+            <ShoppingCart />
+          </button>
+          <Link
+            href={`/product/${product.id}`}
+            className="flex flex-1 flex-col"
+          >
+            <div className="flex-1 self-center">
+              <Image
+                src={product.imageUrl}
+                width={120}
+                height={120}
+                alt={product.name}
+                className="h-[150px] max-w-[130px] rounded-md"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-lg font-bold">{product.name}</p>
+              <p className="text-muted-foreground truncate">
+                {product.description}
+              </p>
+              <p className="font-semibold">{formatPrice(product.price)}</p>
+            </div>
+          </Link>
+
+          <button className="w-full cursor-pointer rounded-md border border-orange-500 py-2 font-bold text-orange-500 transition duration-150 ease-in-out hover:bg-orange-500 hover:text-white">
+            Comprar
+          </button>
         </div>
       ))}
     </div>
