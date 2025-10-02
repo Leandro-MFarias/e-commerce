@@ -30,7 +30,7 @@ export function Categories() {
   useProductsToShow(id!);
 
   return (
-    <nav className="shadow-shape mx-auto mt-10 flex max-w-7xl justify-center rounded-full bg-neutral-800 py-2">
+    <nav className="shadow-shape mx-auto mt-10 flex max-w-7xl justify-center rounded-full bg-neutral-900 py-2">
       <ul className="flex items-center space-x-20">
         <li>
           <button

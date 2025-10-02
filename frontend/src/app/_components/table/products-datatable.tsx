@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Product } from "../../../types/product";
 import { DataTable } from "./datatable";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { formatPrice } from "@/utils/formatPrice";
 import { useProducts } from "@/hooks/product";

@@ -23,7 +23,7 @@ export function ProductList() {
       {products?.map((product: Product) => (
         <div
           key={product.id}
-          className="shadow-shape flex h-[370px] w-80 flex-col space-y-6 rounded-lg bg-neutral-700 px-3 py-6"
+          className="shadow-dark flex h-[370px] w-80 flex-col space-y-6 rounded-lg bg-neutral-900 px-3 py-6"
         >
           <div className="flex-1 self-center">
             <Image
