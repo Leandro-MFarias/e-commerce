@@ -1,15 +1,28 @@
 import prisma from "../lib/prisma.js";
 
-export const findAll = (search) => {
+export const findAll = (search, categoryId) => {
   return prisma.product.findMany({
-    where: search
-      ? {
-          name: {
-            contains: search,
-            mode: "insensitive",
-          },
-        }
-      : {},
+    where: {
+      AND: [
+        search
+          ? {
+              name: {
+                contains: search,
+                mode: "insensitive",
+              },
+            }
+          : {},
+        categoryId
+          ? {
+              categories: {
+                some: {
+                  id: categoryId,
+                },
+              },
+            }
+          : {},
+      ],
+    },
     include: {
       categories: {
         select: {

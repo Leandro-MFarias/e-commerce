@@ -2,9 +2,9 @@ import * as productService from "../services/product.service.js";
 
 export async function getProductsController(req, res) {
   try {
-    const { search } = req.query
+    const { search, categoryId } = req.query
 
-    const result = await productService.listProducts(search);
+    const result = await productService.listProducts(search, categoryId);
 
     return res.status(200).json(result);
   } catch (error) {

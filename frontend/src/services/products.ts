@@ -50,6 +50,18 @@ export async function searchProducts(query: string) {
   }
 }
 
+export async function productByCategory(query: string) {
+  try {
+    const res = await api.get(`/products?categoryId=${query}`);
+    return res.data;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data.message);
+    }
+    throw error;
+  }
+}
+
 export async function updateProduct({ productId, payload }: ProductProp) {
   try {
     const res = await api.put(`/products/${productId}`, payload);

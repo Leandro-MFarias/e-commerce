@@ -2,8 +2,8 @@ import { ZodError } from "zod";
 import * as productModel from "../models/product.model.js";
 import { productSchema } from "../types/productSchema.js";
 
-export async function listProducts(search) {
-  const result = await productModel.findAll(search);
+export async function listProducts(search, categoryId) {
+  const result = await productModel.findAll(search, categoryId);
 
   if (!result) {
     const error = new Error("Produtos não encontrados");
