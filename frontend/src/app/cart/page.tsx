@@ -1,6 +1,6 @@
 "use client";
 
-import { useCartItems, useDeleteToCart } from "@/hooks/cart";
+import { useCartItems, useDeleteToCart, useUpdateCart } from "@/hooks/cart";
 import { Header } from "../_components/header";
 import { CartItem } from "@/types/cartItems";
 import Image from "next/image";
@@ -18,6 +18,7 @@ import { TotalPrice } from "@/utils/totalPrice";
 export default function CartPage() {
   const { data: products, isLoading } = useCartItems();
   const { mutateAsync: deleteItem } = useDeleteToCart();
+  const { mutateAsync: updateItem } = useUpdateCart();
 
   if (isLoading) {
     return (
@@ -25,6 +26,19 @@ export default function CartPage() {
         <Loader2 className="animate-spin" size={60} />
       </div>
     );
+  }
+
+  console.log(products);
+
+  function decreaseQuantity(cartItemId: string, quantity: number) {
+    if (quantity === 1) {
+      deleteItem(cartItemId);
+    }
+    return updateItem({ cartItemId, quantity: quantity - 1 });
+  }
+
+  function increseQuantity(cartItemId: string, quantity: number) {
+    return updateItem({ cartItemId, quantity: quantity + 1 });
   }
 
   return (
@@ -55,9 +69,19 @@ export default function CartPage() {
                       <p className="pl-2">{formatPrice(item.product.price)}</p>
 
                       <div className="flex items-center space-x-4">
-                        <ChevronLeft className="h-6 w-6 cursor-pointer rounded-md bg-neutral-600 transition duration-150 ease-in hover:bg-orange-500" />
+                        <ChevronLeft
+                          onClick={() =>
+                            decreaseQuantity(item.id, item.quantity)
+                          }
+                          className="h-6 w-6 cursor-pointer rounded-md bg-neutral-600 transition duration-150 ease-in hover:bg-orange-500"
+                        />
                         <p>{item.quantity}</p>
-                        <ChevronRight className="h-6 w-6 cursor-pointer rounded-md bg-neutral-600 transition duration-150 ease-in hover:bg-orange-500" />
+                        <ChevronRight
+                          onClick={() =>
+                            increseQuantity(item.id, item.quantity)
+                          }
+                          className="h-6 w-6 cursor-pointer rounded-md bg-neutral-600 transition duration-150 ease-in hover:bg-orange-500"
+                        />
                       </div>
                     </div>
                   </div>

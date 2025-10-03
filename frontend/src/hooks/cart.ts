@@ -1,5 +1,5 @@
 import * as cartApi from "@/services/cart";
-import { CartItem } from "@/types/cartItems";
+import { CartItem, UpdateCartParams } from "@/types/cartItems";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useCartItems() {
@@ -21,9 +21,21 @@ export function useAddToCart() {
   });
 }
 
-export function useUpdateCart(cartItemId: string, quantity: number) {
+export function useUpdateCart() {
+  const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: () => cartApi.updateCartItem(cartItemId, quantity),
+    mutationFn: ({ cartItemId, quantity }: UpdateCartParams) =>
+      cartApi.updateCartItem(cartItemId, quantity),
+    onSuccess: (_, { cartItemId, quantity }) => {
+      queryClient.setQueryData<CartItem[]>(["cartItems"], (old) => {
+        if (!old) return [];
+
+        return old.map((item) =>
+          item.id === cartItemId ? { ...item, quantity } : item,
+        );
+      });
+    },
   });
 }
 
