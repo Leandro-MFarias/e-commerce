@@ -9,9 +9,10 @@ export const findById = (id) => {
       role: true,
       cartItems: {
         select: {
-          id: true
-        }
-      }
+          id: true,
+          productId: true,
+        },
+      },
     },
   });
 };
