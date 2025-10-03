@@ -1,5 +1,6 @@
 "use client";
 
+import { useAddToCart } from "@/hooks/cart";
 import { useProducts, useProductsToShow } from "@/hooks/product";
 import { useCategoryId } from "@/store/category";
 import { Product } from "@/types/product";
@@ -15,6 +16,7 @@ export function ProductList() {
     useProductsToShow(id!);
 
   const { data: allProducts, isLoading } = useProducts({ enabled: !id });
+  const { mutateAsync: addCart } = useAddToCart();
 
   if (isLoading || isLoadingCategory) {
     return (
@@ -33,7 +35,10 @@ export function ProductList() {
           key={product.id}
           className="shadow-dark relative flex h-[420px] w-80 flex-col space-y-6 rounded-lg border border-neutral-900 bg-neutral-900 px-3 py-6 transition duration-100 ease-in hover:border-neutral-600/70"
         >
-          <button className="absolute top-3 right-3 cursor-pointer transition duration-150 ease-in hover:scale-105 hover:text-orange-500">
+          <button
+            className="absolute top-3 right-3 cursor-pointer transition duration-150 ease-in hover:scale-105 hover:text-orange-500"
+            onClick={() => addCart(product.id)}
+          >
             <ShoppingCart />
           </button>
           <Link

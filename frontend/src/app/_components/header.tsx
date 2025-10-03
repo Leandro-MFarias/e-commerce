@@ -144,7 +144,7 @@ export function Header() {
             <button className="relative cursor-pointer transition duration-150 ease-in hover:scale-105">
               <ShoppingBag />
               <span className="absolute -top-2 -right-3 flex w-5 items-center justify-center rounded-full bg-red-600 text-sm font-semibold">
-                1
+                {user?.cartItems?.length}
               </span>
             </button>
           </Link>

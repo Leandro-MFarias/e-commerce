@@ -1,5 +1,5 @@
 import * as cartApi from "@/services/cart";
-import { CartItem } from "@/types/product";
+import { CartItem } from "@/types/cartItems";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export function useCartItems() {
@@ -16,7 +16,7 @@ export function useAddToCart() {
   return useMutation({
     mutationFn: cartApi.addToCart,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["cartItems"] });
+      queryClient.invalidateQueries({ queryKey: ["user"] });
     },
   });
 }
