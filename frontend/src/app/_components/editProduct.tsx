@@ -10,7 +10,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Check, Loader2, LoaderCircle } from "lucide-react";
+import { Check, LoaderCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ChangeEvent, useEffect, useState } from "react";
 import Image from "next/image";
@@ -19,7 +19,6 @@ import { uploadImage } from "@/supabase/storage/upload";
 import { useUpdateProduct } from "@/hooks/product";
 import { Category } from "@/types/category";
 import { Product } from "@/types/product";
-import { formatPrice } from "@/utils/formatPrice";
 
 interface ProductEdit {
   product: Product;
@@ -297,9 +296,3 @@ export function EditProduct({ product, categories }: ProductEdit) {
 //     return; // também aborta se URL inválida
 //   }
 // }
-
-// useEffect(() => {
-//   if (product?.imageUrl) {
-//     setPreviewImage(product.imageUrl);
-//   }
-// }, [product?.imageUrl]);

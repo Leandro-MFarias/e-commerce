@@ -28,8 +28,6 @@ export default function CartPage() {
     );
   }
 
-  console.log(products);
-
   function decreaseQuantity(cartItemId: string, quantity: number) {
     if (quantity === 1) {
       deleteItem(cartItemId);

@@ -66,7 +66,7 @@ export const update = (id, data) => {
       stock: data.stock,
       imageUrl: data.imageUrl,
       categories: {
-        connect: data.categories.map((catId) => ({ id: catId })),
+        set: data.categories.map((catId) => ({ id: catId })),
       },
     },
   });
