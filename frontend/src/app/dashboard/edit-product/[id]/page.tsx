@@ -1,7 +1,7 @@
 "use client";
 
-import { EditProduct } from "@/app/_components/editProduct";
-import { SideBar } from "@/app/_components/sidebar";
+import { EditProduct } from "@/app/_components/dashboard/editProduct";
+import { SideBar } from "@/app/_components/dashboard/sidebar";
 import { useCategories } from "@/hooks/categories";
 import { useFindProduct } from "@/hooks/product";
 import { Loader2 } from "lucide-react";

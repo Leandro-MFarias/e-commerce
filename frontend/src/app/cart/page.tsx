@@ -1,7 +1,7 @@
 "use client";
 
 import { useCartItems, useDeleteToCart, useUpdateCart } from "@/hooks/cart";
-import { Header } from "../_components/header";
+import { Header } from "../_components/header/header";
 import { CartItem } from "@/types/cartItems";
 import Image from "next/image";
 import {

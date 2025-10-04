@@ -16,7 +16,7 @@ import { useEffect, useState } from "react";
 import { NewCategoryForm } from "./newCategoryForm";
 
 export function SideBar() {
-  const [ isOpen, setIsOpen ] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { page, changePage } = useNavPage();
 

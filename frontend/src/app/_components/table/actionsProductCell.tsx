@@ -24,7 +24,7 @@ export function ActionsProductCell({ product }: { product: Product }) {
   const router = useRouter();
 
   function handleEdit() {
-    router.push(`/admin-page/edit-product/${product.id}`);
+    router.push(`/dashboard/edit-product/${product.id}`);
   }
 
   async function handleDelete() {

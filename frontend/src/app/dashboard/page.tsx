@@ -1,7 +1,7 @@
-import { SideBar } from "../_components/sidebar";
+import { SideBar } from "../_components/dashboard/sidebar";
 import { ProducsDataTable } from "../_components/table/products-datatable";
 
-export default async function AdminPage() {
+export default async function Dashboard() {
   return (
     <div className="flex md:h-screen">
       <SideBar />
