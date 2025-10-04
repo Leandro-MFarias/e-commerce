@@ -4,10 +4,6 @@ import { Menu, ShoppingBag } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useUser, useLogout } from "@/hooks/user-auth";
-import { useSearchProduct } from "@/hooks/product";
-import { Product } from "@/types/product";
-import Image from "next/image";
-import { formatPrice } from "@/utils/formatPrice";
 import {
   Sheet,
   SheetContent,
@@ -15,23 +11,18 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
+import { SearchInput } from "./searchInput";
 
 export function Header() {
   const { data: user, isLoading } = useUser();
   const { mutate: logout, isPending } = useLogout();
-  const [search, setSearch] = useState("");
+
   const [menuDrop, setMenuDrop] = useState(false);
-  const [searchMenu, setSearchMenu] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const { data: products } = useSearchProduct(search);
-
-  function handleShowSearchProducts() {
-    if (searchMenu && products?.length > 0) {
-      return "block";
-    } else {
-      return "hidden";
-    }
+  function handleLogout() {
+    logout();
+    setIsOpen(false);
   }
 
   return (
@@ -43,49 +34,11 @@ export function Header() {
           </h1>
         </Link>
 
-        <div className="relative w-full md:w-[60%]">
-          <input
-            type="text"
-            className="w-full rounded-sm border-2 border-orange-500 bg-zinc-100 px-4 py-2 text-neutral-700 outline-none"
-            placeholder="Procure seu jogo.."
-            onFocus={() => setSearchMenu(true)}
-            onBlur={() => setSearchMenu(false)}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <div
-            onMouseDown={(e) => e.preventDefault()}
-            className={`absolute w-full translate-y-2 space-y-2 rounded-sm bg-white pt-2 pb-[1px] text-black ${handleShowSearchProducts()}`}
-          >
-            {products &&
-              products.length > 0 &&
-              products.map((product: Product, index: number) => (
-                <div key={product.id} className="space-y-2">
-                  <Link href={`/product/${product.id}`}>
-                    <div className="flex w-full items-center space-x-4 pl-4">
-                      <Image
-                        src={product.imageUrl}
-                        width={30}
-                        height={30}
-                        alt={product.name}
-                      />
-                      <div className="flex items-center space-x-2 text-neutral-500">
-                        <p>{product.name}</p>
-                        <span>-</span>
-                        <p className="text-sm">{formatPrice(product.price)}</p>
-                      </div>
-                    </div>
-                  </Link>
-                  <div
-                    className={`h-[1px] w-full bg-zinc-300 ${index === products.length - 1 && "hidden"}`}
-                  />
-                </div>
-              ))}
-          </div>
-        </div>
+        <SearchInput />
 
         <div className="hidden items-center space-x-6 md:flex">
           {isLoading ? (
-            <p>carregando...</p>
+            <p>carregando..</p>
           ) : user ? (
             <div className="relative flex w-full">
               <button
@@ -115,7 +68,7 @@ export function Header() {
                 )}
                 <button
                   className={`cursor-pointer text-sm text-zinc-200 transition duration-150 ease-in hover:scale-105`}
-                  onClick={() => logout()}
+                  onClick={handleLogout}
                   disabled={isPending}
                 >
                   Sair
@@ -141,7 +94,6 @@ export function Header() {
           {user && (
             <>
               <div className="h-6 w-[1px] bg-zinc-500" />
-
               <Link href={"/cart"}>
                 <button className="relative cursor-pointer transition duration-150 ease-in hover:scale-105">
                   <ShoppingBag />
@@ -154,13 +106,28 @@ export function Header() {
           )}
         </div>
 
-        <Menu
-          className="absolute top-10 left-4 md:hidden"
-          onClick={() => setIsOpen(true)}
-        />
-        <button className="absolute top-10 right-4 md:hidden">
-          <ShoppingBag />
-        </button>
+        {user ? (
+          <>
+            <Menu
+              className="absolute top-10 left-4 md:hidden"
+              onClick={() => setIsOpen(true)}
+            />
+            <Link href={"/cart"} className="absolute top-10 right-4">
+              <button className="relative cursor-pointer transition duration-150 ease-in hover:scale-105 md:hidden">
+                <ShoppingBag />
+                <span className="absolute -top-2 -right-3 flex w-5 items-center justify-center rounded-full bg-red-600 text-sm font-semibold">
+                  {user?.cartItems?.length}
+                </span>
+              </button>
+            </Link>
+          </>
+        ) : (
+          <Link href={"/login"} className="absolute top-12 right-6">
+            <button className="cursor-pointer transition duration-150 ease-in hover:scale-105">
+              Entrar
+            </button>
+          </Link>
+        )}
       </header>
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetContent className="w-full px-2" side="top">
@@ -187,7 +154,7 @@ export function Header() {
             )}
             <button
               className={`cursor-pointer text-xl text-zinc-200 transition duration-150 ease-in hover:scale-105`}
-              onClick={() => logout()}
+              onClick={handleLogout}
               disabled={isPending}
             >
               Sair

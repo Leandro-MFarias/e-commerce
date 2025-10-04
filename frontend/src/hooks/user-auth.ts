@@ -1,7 +1,7 @@
 import * as usersApi from "@/services/user";
 import * as authApi from "@/services/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export function useLogin() {
   const queryClient = useQueryClient();
@@ -30,18 +30,20 @@ export function useUser() {
 
 export function useLogout() {
   const queryClient = useQueryClient();
+  const currentPath = usePathname();
   const router = useRouter();
 
   return useMutation({
     mutationFn: authApi.logout,
     onSuccess: () => {
       queryClient.removeQueries({ queryKey: ["user"] });
+      if (currentPath === "/cart") {
+        router.push("/");
+      }
       router.refresh();
     },
     onError: (error: Error) => {
       console.error("Logout failed:", error.message);
-      queryClient.removeQueries({ queryKey: ["user"] });
-      router.refresh();
     },
   });
 }
