@@ -1,24 +1,14 @@
 "use client";
 
-import { useCartItems, useDeleteToCart, useUpdateCart } from "@/hooks/cart";
 import { Header } from "../_components/header/header";
-import { CartItem } from "@/types/cartItems";
-import Image from "next/image";
-import {
-  ChevronLeft,
-  ChevronRight,
-  Loader2,
-  PackageSearch,
-  Trash,
-} from "lucide-react";
+import { Loader2, PackageSearch } from "lucide-react";
 import { formatPrice } from "@/utils/formatPrice";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { TotalPrice } from "@/utils/totalPrice";
+import { CartItems } from "../_components/cart/cartItems";
+import { useCartItems } from "@/hooks/cart";
 
 export default function CartPage() {
   const { data: products, isLoading, isFetching } = useCartItems();
-  const { mutateAsync: deleteItem } = useDeleteToCart();
-  const { mutateAsync: updateItem } = useUpdateCart();
 
   if (isLoading || isFetching) {
     return (
@@ -26,17 +16,6 @@ export default function CartPage() {
         <Loader2 className="animate-spin" size={60} />
       </div>
     );
-  }
-
-  function decreaseQuantity(cartItemId: string, quantity: number) {
-    if (quantity === 1) {
-      deleteItem(cartItemId);
-    }
-    return updateItem({ cartItemId, quantity: quantity - 1 });
-  }
-
-  function increseQuantity(cartItemId: string, quantity: number) {
-    return updateItem({ cartItemId, quantity: quantity + 1 });
   }
 
   return (
@@ -48,52 +27,7 @@ export default function CartPage() {
         </p>
       ) : (
         <div className="mx-auto mt-10 grid max-w-7xl justify-items-center gap-6 md:grid-cols-[1fr_300px]">
-          <ScrollArea className="shadow-dark h-[72vh] w-full rounded-md border border-neutral-600/80 px-4">
-            {products?.map((item: CartItem) => (
-              <div key={item.id} className="mt-6 space-y-4">
-                <div className="flex justify-between">
-                  <div className="flex space-x-4">
-                    <div className="relative h-20 w-20">
-                      <Image
-                        src={item?.product?.imageUrl?.trim()}
-                        fill
-                        alt={item.product.name}
-                        sizes="80px"
-                        className="object-fit rounded-md"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <p className="font-semibold">{item.product.name}</p>
-                      <p className="pl-2">{formatPrice(item.product.price)}</p>
-
-                      <div className="flex items-center space-x-4">
-                        <ChevronLeft
-                          onClick={() =>
-                            decreaseQuantity(item.id, item.quantity)
-                          }
-                          className="h-6 w-6 cursor-pointer rounded-md bg-neutral-600 transition duration-150 ease-in hover:bg-orange-500"
-                        />
-                        <p>{item.quantity}</p>
-                        <ChevronRight
-                          onClick={() =>
-                            increseQuantity(item.id, item.quantity)
-                          }
-                          className="h-6 w-6 cursor-pointer rounded-md bg-neutral-600 transition duration-150 ease-in hover:bg-orange-500"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <button
-                    className="mr-4 cursor-pointer transition duration-150 ease-in hover:text-red-600"
-                    onClick={() => deleteItem(item.id)}
-                  >
-                    <Trash />
-                  </button>
-                </div>
-                <div className="h-[1px] w-full bg-neutral-600" />
-              </div>
-            ))}
-          </ScrollArea>
+          <CartItems products={products} />
 
           {/* RESUME */}
           <div className="shadow-dark fixed bottom-0 flex h-40 w-full flex-col justify-between space-y-3 rounded-md border bg-neutral-900 px-4 py-2 pb-6 md:static md:bg-transparent md:pb-2">
