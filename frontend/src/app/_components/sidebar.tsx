@@ -21,10 +21,10 @@ export function SideBar() {
   const { page, changePage } = useNavPage();
 
   const nav = [
-    { name: "Produtos", href: "/admin-page" },
-    { name: "Clientes", href: "/admin-page/customers" },
-    { name: "Vendas", href: "/admin-page/sales" },
-    { name: "Novo produto", href: "/admin-page/new-product" },
+    { name: "Produtos", href: "/dashboard" },
+    { name: "Clientes", href: "/dashboard/customers" },
+    { name: "Vendas", href: "/dashboard/sales" },
+    { name: "Novo produto", href: "/dashboard/new-product" },
   ];
 
   useEffect(() => {

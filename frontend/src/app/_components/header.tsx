@@ -105,11 +105,11 @@ export function Header() {
                   Meus pedidos
                 </button>
                 {user.role === "ADMIN" && (
-                  <Link href={"/admin-page"}>
+                  <Link href={"/dashboard"}>
                     <button
                       className={`cursor-pointer text-sm text-zinc-200 transition duration-150 ease-in hover:scale-105`}
                     >
-                      Admin Page
+                      Dashboard
                     </button>
                   </Link>
                 )}
@@ -138,16 +138,20 @@ export function Header() {
             </div>
           )}
 
-          <div className="h-6 w-[1px] bg-zinc-500" />
+          {user && (
+            <>
+              <div className="h-6 w-[1px] bg-zinc-500" />
 
-          <Link href={"/cart"}>
-            <button className="relative cursor-pointer transition duration-150 ease-in hover:scale-105">
-              <ShoppingBag />
-              <span className="absolute -top-2 -right-3 flex w-5 items-center justify-center rounded-full bg-red-600 text-sm font-semibold">
-                {user?.cartItems?.length}
-              </span>
-            </button>
-          </Link>
+              <Link href={"/cart"}>
+                <button className="relative cursor-pointer transition duration-150 ease-in hover:scale-105">
+                  <ShoppingBag />
+                  <span className="absolute -top-2 -right-3 flex w-5 items-center justify-center rounded-full bg-red-600 text-sm font-semibold">
+                    {user?.cartItems?.length}
+                  </span>
+                </button>
+              </Link>
+            </>
+          )}
         </div>
 
         <Menu
@@ -177,7 +181,7 @@ export function Header() {
                 <button
                   className={`cursor-pointer text-xl text-zinc-200 transition duration-150 ease-in hover:scale-105`}
                 >
-                  Admin Page
+                  Dashboard
                 </button>
               </Link>
             )}

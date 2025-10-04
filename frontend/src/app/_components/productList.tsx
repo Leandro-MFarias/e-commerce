@@ -1,22 +1,27 @@
 "use client";
 
-import { useAddToCart } from "@/hooks/cart";
+import { useAddToCart, useDeleteToCart } from "@/hooks/cart";
 import { useProducts, useProductsToShow } from "@/hooks/product";
+import { useUser } from "@/hooks/user-auth";
 import { useCategoryId } from "@/store/category";
+import { CartItem } from "@/types/cartItems";
 import { Product } from "@/types/product";
 import { formatPrice } from "@/utils/formatPrice";
 import { Loader2, ShoppingCart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { toast } from "sonner";
 
 export function ProductList() {
-  const { id } = useCategoryId();
-
+  const { id } = useCategoryId(); // store
+  
+  // Queries
   const { data: productToShow, isLoading: isLoadingCategory } =
     useProductsToShow(id!);
-
   const { data: allProducts, isLoading } = useProducts({ enabled: !id });
+  const { data: user } = useUser();
   const { mutateAsync: addCart } = useAddToCart();
+  const { mutateAsync: deleteItem } = useDeleteToCart();
 
   if (isLoading || isLoadingCategory) {
     return (
@@ -24,6 +29,18 @@ export function ProductList() {
         <Loader2 className="animate-spin" size={60} />
       </div>
     );
+  }
+
+  function handleAddToCart(productId: string) {
+    if (!user) return toast.error("Precisa entrar na sua conta!");
+
+    const exists = user.cartItems.find(
+      (product: CartItem) => product.productId === productId,
+    );
+
+    if (exists) return deleteItem(exists.id);
+
+    addCart(productId);
   }
 
   const products = id ? productToShow : allProducts;
@@ -36,8 +53,8 @@ export function ProductList() {
           className="shadow-dark relative flex h-[420px] w-80 flex-col space-y-6 rounded-lg border border-neutral-900 bg-neutral-900 px-3 py-6 transition duration-100 ease-in hover:border-neutral-600/70"
         >
           <button
-            className="absolute top-3 right-3 cursor-pointer transition duration-150 ease-in hover:scale-105 hover:text-orange-500"
-            onClick={() => addCart(product.id)}
+            className={`absolute top-3 right-3 cursor-pointer transition duration-150 ease-in hover:scale-105 hover:text-orange-500 `}
+            onClick={() => handleAddToCart(product.id)}
           >
             <ShoppingCart />
           </button>
