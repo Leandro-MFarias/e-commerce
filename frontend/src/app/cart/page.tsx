@@ -16,11 +16,11 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { TotalPrice } from "@/utils/totalPrice";
 
 export default function CartPage() {
-  const { data: products, isLoading } = useCartItems();
+  const { data: products, isLoading, isFetching } = useCartItems();
   const { mutateAsync: deleteItem } = useDeleteToCart();
   const { mutateAsync: updateItem } = useUpdateCart();
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <div className="flex h-screen items-center justify-center">
         <Loader2 className="animate-spin" size={60} />
@@ -55,7 +55,7 @@ export default function CartPage() {
                   <div className="flex space-x-4">
                     <div className="relative h-20 w-20">
                       <Image
-                        src={item.product.imageUrl.trim()}
+                        src={item?.product?.imageUrl?.trim()}
                         fill
                         alt={item.product.name}
                         sizes="80px"
