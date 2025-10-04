@@ -48,7 +48,7 @@ export default function CartPage() {
         </p>
       ) : (
         <div className="mx-auto mt-10 grid max-w-7xl justify-items-center gap-6 md:grid-cols-[1fr_300px]">
-          <ScrollArea className="shadow-dark h-[70vh] w-full rounded-md border border-neutral-600/80 px-4">
+          <ScrollArea className="shadow-dark h-[72vh] w-full rounded-md border border-neutral-600/80 px-4">
             {products?.map((item: CartItem) => (
               <div key={item.id} className="mt-6 space-y-4">
                 <div className="flex justify-between">
