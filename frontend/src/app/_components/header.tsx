@@ -122,7 +122,7 @@ export function Header() {
             </Link>
           </>
         ) : (
-          <Link href={"/login"} className="absolute top-12 right-6">
+          <Link href={"/login"} className="md:hidden absolute top-12 right-6">
             <button className="cursor-pointer transition duration-150 ease-in hover:scale-105">
               Entrar
             </button>

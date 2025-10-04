@@ -38,7 +38,7 @@ export function SearchInput() {
         {products &&
           products.length > 0 &&
           products.map((product: Product, index: number) => (
-            <div key={product.id} className="space-y-2">
+            <div key={product.id} className="space-y-2 py-1">
               <Link href={`/product/${product.id}`}>
                 <div className="flex w-full items-center space-x-4 pl-4">
                   <Image
@@ -50,7 +50,9 @@ export function SearchInput() {
                   <div className="flex items-center space-x-2 text-neutral-500">
                     <p>{product.name}</p>
                     <span>-</span>
-                    <p className="text-sm">{formatPrice(product.price)}</p>
+                    <p className="text-sm font-semibold text-black">
+                      {formatPrice(product.price)}
+                    </p>
                   </div>
                 </div>
               </Link>

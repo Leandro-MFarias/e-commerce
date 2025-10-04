@@ -7,20 +7,19 @@ import PlaystationLogo from "@/assets/icons/playstation.svg";
 import NintendoLogo from "@/assets/icons/nintendo.svg";
 import XboxLogo from "@/assets/icons/xbox.svg";
 import { DollarSign, Package } from "lucide-react";
-import clsx from "clsx";
 import { useProductsToShow } from "@/hooks/product";
 import { useCategoryId } from "@/store/category";
 
 type CategoryIconInfo = {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
-  hover: string;
+  color: string;
 };
 
 const categoryIcons: Record<string, CategoryIconInfo> = {
-  PlayStation: { icon: PlaystationLogo, hover: "text-blue-600" },
-  Xbox: { icon: XboxLogo, hover: "text-lime-600" },
-  Nintendo: { icon: NintendoLogo, hover: "text-red-600" },
-  Promoções: { icon: DollarSign, hover: "text-yellow-500" },
+  PlayStation: { icon: PlaystationLogo, color: "text-blue-600" },
+  Xbox: { icon: XboxLogo, color: "text-lime-600" },
+  Nintendo: { icon: NintendoLogo, color: "text-red-600" },
+  Promoções: { icon: DollarSign, color: "text-yellow-500" },
 };
 
 export function Categories() {
@@ -55,26 +54,10 @@ export function Categories() {
             >
               <button className="group flex cursor-pointer items-center space-x-1 md:space-x-2">
                 <Icon
-                  className={clsx(
-                    "h-4 w-4 text-zinc-300 transition duration-150 sm:h-6 sm:w-6 md:h-10 md:w-10 md:text-white",
-                    category.name === "PlayStation" &&
-                      "group-hover:text-blue-600",
-                    category.name === "Xbox" && "group-hover:text-lime-600",
-                    category.name === "Nintendo" && "group-hover:text-red-600",
-                    category.name === "Promoções" &&
-                      "group-hover:text-yellow-500",
-                  )}
+                  className={`h-4 w-4 transition duration-150 sm:h-6 sm:w-6 md:h-10 md:w-10 ${id === category.id ? categoryInfo.color : "text-zinc-300 md:text-white"} ${`group-hover:${categoryInfo.color}`}`}
                 />
                 <p
-                  className={clsx(
-                    "text-sm text-nowrap text-zinc-300 transition duration-150 md:text-base md:text-white",
-                    category.name === "PlayStation" &&
-                      "group-hover:text-blue-600",
-                    category.name === "Xbox" && "group-hover:text-lime-500",
-                    category.name === "Nintendo" && "group-hover:text-red-600",
-                    category.name === "Promoções" &&
-                      "group-hover:text-yellow-500",
-                  )}
+                  className={`text-sm text-nowrap transition duration-150 md:text-base ${id === category.id ? categoryInfo.color : "text-zinc-300 md:text-white"} ${`group-hover:${categoryInfo.color}`}`}
                 >
                   {category.name}
                 </p>

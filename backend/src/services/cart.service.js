@@ -24,9 +24,13 @@ export async function addItemToCart(userId, productId) {
     throw error;
   }
 
-  await cartModel.addProduct(userId, productId);
+  const existing = await cartModel.findProduct(userId, productId);
 
-  return { message: "Produto adicionado!" };
+  if (existing) {
+    return await cartModel.updateProduct(existing.id, existing.quantity + 1);
+  } else {
+    return await cartModel.addProduct(userId, productId);
+  }
 }
 
 export async function updateItemQuantity(id, quantity) {

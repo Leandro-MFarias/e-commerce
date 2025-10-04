@@ -1,10 +1,10 @@
 "use client";
 
-import { useAddToCart, useDeleteToCart } from "@/hooks/cart";
+import { useAddToCart } from "@/hooks/cart";
 import { useProducts, useProductsToShow } from "@/hooks/product";
 import { useUser } from "@/hooks/user-auth";
 import { useCategoryId } from "@/store/category";
-import { CartItem } from "@/types/cartItems";
+// import { CartItem } from "@/types/cartItems";
 import { Product } from "@/types/product";
 import { formatPrice } from "@/utils/formatPrice";
 import { Loader2, ShoppingCart } from "lucide-react";
@@ -21,7 +21,6 @@ export function ProductList() {
   const { data: allProducts, isLoading } = useProducts({ enabled: !id });
   const { data: user } = useUser();
   const { mutateAsync: addCart } = useAddToCart();
-  const { mutateAsync: deleteItem } = useDeleteToCart();
 
   if (isLoading || isLoadingCategory) {
     return (
@@ -33,13 +32,6 @@ export function ProductList() {
 
   function handleAddToCart(productId: string) {
     if (!user) return toast.error("Precisa entrar na sua conta!");
-
-    const exists = user.cartItems.find(
-      (product: CartItem) => product.productId === productId,
-    );
-
-    if (exists) return deleteItem(exists.id);
-
     addCart(productId);
   }
 

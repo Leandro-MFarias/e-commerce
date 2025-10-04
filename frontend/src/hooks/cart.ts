@@ -15,8 +15,20 @@ export function useAddToCart() {
 
   return useMutation({
     mutationFn: cartApi.addToCart,
-    onSuccess: () => {
+    onSuccess: (newItem) => {
       queryClient.invalidateQueries({ queryKey: ["user"] });
+      queryClient.setQueryData<CartItem[]>(["cartItems"], (old) => {
+        if (!old) return [newItem];
+        const exists = old.find((item: CartItem) => item.id === newItem.id);
+        if (exists) {
+          return old.map((item: CartItem) =>
+            item.id === newItem.id
+              ? { ...item, quatity: newItem.quantity }
+              : item,
+          );
+        }
+        return [...old, newItem];
+      });
     },
   });
 }

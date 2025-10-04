@@ -9,6 +9,12 @@ export const getAll = (userId) => {
   });
 };
 
+export const findProduct = (userId, productId) => {
+  return prisma.cartItem.findFirst({
+    where: { userId, productId },
+  });
+};
+
 export const addProduct = (userId, productId) => {
   return prisma.cartItem.create({
     data: {
@@ -16,6 +22,7 @@ export const addProduct = (userId, productId) => {
       productId,
       quantity: 1,
     },
+    include: { product: { select: { id: true } } },
   });
 };
 
