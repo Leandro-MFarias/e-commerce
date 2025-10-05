@@ -33,7 +33,7 @@ export function SearchInput() {
       />
       <div
         onMouseDown={(e) => e.preventDefault()}
-        className={`absolute w-full translate-y-2 space-y-2 rounded-sm bg-white pt-2 pb-[1px] text-black ${handleShowSearchProducts()}`}
+        className={`absolute z-50 w-full translate-y-2 space-y-2 rounded-sm bg-white pt-2 pb-[1px] text-black ${handleShowSearchProducts()}`}
       >
         {products &&
           products.length > 0 &&
