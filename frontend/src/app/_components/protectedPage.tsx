@@ -17,7 +17,7 @@ export function ProtectedPage({ children }: { children: ReactNode }) {
 
   if (isLoading || !user) {
     return (
-      <div>
+      <div className="flex h-screen items-center justify-center">
         <Loader2 className="animate-spin" size={60} />
       </div>
     );
