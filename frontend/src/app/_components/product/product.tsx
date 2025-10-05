@@ -47,7 +47,7 @@ export function Product({ productId }: PropId) {
       </div>
 
       {/* IMAGEM */}
-      <div className="relative h-[460px] w-[420px] justify-self-center lg:mt-20 lg:h-[520px] lg:w-[420px]">
+      <div className="relative h-[440px] w-[90%] justify-self-center sm:h-[460px] sm:w-[420px] lg:mt-20 lg:h-[520px] lg:w-[420px]">
         <Image
           src={product.imageUrl}
           alt={product.name}

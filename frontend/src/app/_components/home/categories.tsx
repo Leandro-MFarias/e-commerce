@@ -9,6 +9,7 @@ import XboxLogo from "@/assets/icons/xbox.svg";
 import { DollarSign, Package } from "lucide-react";
 import { useProductsToShow } from "@/hooks/product";
 import { useCategoryId } from "@/store/category";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 type CategoryIconInfo = {
   icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -46,43 +47,46 @@ export function Categories() {
   useProductsToShow(id!);
 
   return (
-    <nav className="shadow-shape flex justify-center bg-neutral-900 px-2 py-2 md:mx-auto md:mt-10 md:max-w-7xl md:rounded-full">
-      <ul className="flex items-center space-x-2 sm:space-x-4 md:space-x-20">
-        <li>
-          <button
-            className={`flex cursor-pointer items-center space-x-1 font-semibold transition duration-150 hover:text-orange-500 sm:space-x-2 ${id === "" ? "text-orange-500" : "text-white"}`}
-            onClick={() => changeCategory("")}
-          >
-            <Package className="h-4 w-4 sm:h-6 sm:w-6 md:h-[32px] md:w-[32px]" />
-            <p>Todos</p>
-          </button>
-        </li>
-        {categories?.map((category: Category) => {
-          const categoryInfo = categoryIcons[category.name];
-          if (!categoryInfo) return null;
-
-          const Icon = categoryInfo.icon;
-
-          return (
-            <li
-              key={category.id}
-              className="flex items-center space-x-2 text-sm"
-              onClick={() => changeCategory(category.id)}
+    <ScrollArea className="pb-2">
+      <nav className="shadow-shape flex justify-center bg-neutral-900 px-2 py-2 md:mx-auto md:mt-10 md:max-w-7xl md:rounded-full">
+        <ul className="flex items-center space-x-2 sm:space-x-4 md:space-x-20">
+          <li>
+            <button
+              className={`flex cursor-pointer items-center space-x-1 transition duration-150 hover:text-orange-500 sm:space-x-2 sm:font-semibold ${id === "" ? "text-orange-500" : "text-white"}`}
+              onClick={() => changeCategory("")}
             >
-              <button className="group flex cursor-pointer items-center space-x-1 md:space-x-2">
-                <Icon
-                  className={`h-4 w-4 transition duration-150 sm:h-6 sm:w-6 md:h-10 md:w-10 ${id === category.id ? categoryInfo.color : "text-zinc-300 md:text-white"} ${categoryInfo.hover}`}
-                />
-                <p
-                  className={`text-sm text-nowrap transition duration-150 md:text-base ${id === category.id ? categoryInfo.color : "text-zinc-300 md:text-white"} ${categoryInfo.hover}`}
-                >
-                  {category.name}
-                </p>
-              </button>
-            </li>
-          );
-        })}
-      </ul>
-    </nav>
+              <Package className="h-3.5 w-3.5 sm:h-6 sm:w-6 md:h-[32px] md:w-[32px]" />
+              <p className="text-sm sm:text-base">Todos</p>
+            </button>
+          </li>
+          {categories?.map((category: Category) => {
+            const categoryInfo = categoryIcons[category.name];
+            if (!categoryInfo) return null;
+
+            const Icon = categoryInfo.icon;
+
+            return (
+              <li
+                key={category.id}
+                className="flex items-center space-x-2 text-sm"
+                onClick={() => changeCategory(category.id)}
+              >
+                <button className="group flex cursor-pointer items-center space-x-1 md:space-x-2">
+                  <Icon
+                    className={`h-4 w-4 transition duration-150 sm:h-6 sm:w-6 md:h-10 md:w-10 ${id === category.id ? categoryInfo.color : "text-zinc-300 md:text-white"} ${categoryInfo.hover}`}
+                  />
+                  <p
+                    className={`text-sm text-nowrap transition duration-150 md:text-base ${id === category.id ? categoryInfo.color : "text-zinc-300 md:text-white"} ${categoryInfo.hover}`}
+                  >
+                    {category.name}
+                  </p>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+      <ScrollBar orientation="horizontal" />
+    </ScrollArea>
   );
 }
