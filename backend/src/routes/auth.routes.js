@@ -16,6 +16,5 @@ router.post("/login", signInController);
 router.post("/logout", auth, logoutSession);
 router.post("/forgot-password", forgotPasswordController);
 router.post("/reset-password", resetPasswordController);
-router.get("verify", auth, verifyController);
 
 export default router;

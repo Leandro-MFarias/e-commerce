@@ -45,17 +45,3 @@ export async function resetPasswordController(req, res) {
     return res.status(error.status || 500).json({ message: error.message });
   }
 }
-
-export async function verifyController(req, res) {
-  try {
-    return res
-      .status(200)
-      .json({
-        message: "Usuário autenticado",
-        userId: req.userId,
-        role: req.role,
-      });
-  } catch (error) {
-    console.error(error);
-  }
-}
