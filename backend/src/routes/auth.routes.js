@@ -6,6 +6,7 @@ import {
   registerUserController,
   resetPasswordController,
   signInController,
+  verifyController,
 } from "../controllers/auth.controller.js";
 
 const router = Router();
@@ -14,6 +15,7 @@ router.post("/register", registerUserController);
 router.post("/login", signInController);
 router.post("/logout", auth, logoutSession);
 router.post("/forgot-password", forgotPasswordController);
-router.post("/reset-password", resetPasswordController)
+router.post("/reset-password", resetPasswordController);
+router.get("verify", auth, verifyController);
 
 export default router;

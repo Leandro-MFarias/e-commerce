@@ -38,10 +38,24 @@ export async function forgotPasswordController(req, res) {
 
 export async function resetPasswordController(req, res) {
   try {
-    const result = await authService.resetPassword(req.body)
-    
-    return res.status(200).json(result)
+    const result = await authService.resetPassword(req.body);
+
+    return res.status(200).json(result);
   } catch (error) {
     return res.status(error.status || 500).json({ message: error.message });
+  }
+}
+
+export async function verifyController(req, res) {
+  try {
+    return res
+      .status(200)
+      .json({
+        message: "Usuário autenticado",
+        userId: req.userId,
+        role: req.role,
+      });
+  } catch (error) {
+    console.error(error);
   }
 }
