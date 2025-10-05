@@ -3,6 +3,22 @@ import * as authApi from "@/services/auth";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { usePathname, useRouter } from "next/navigation";
 
+export function useRegister() {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: authApi.createAccount,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      router.push("/");
+    },
+    onError: (error: Error) => {
+      console.error("Erro no login", error.message);
+    },
+  });
+}
+
 export function useLogin() {
   const queryClient = useQueryClient();
   const router = useRouter();

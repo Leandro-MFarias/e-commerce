@@ -1,7 +1,7 @@
 "use client";
 
+import { useRegister } from "@/hooks/user-auth";
 import { RegisterSchema, registerSchema } from "@/types/registerSchema";
-import { createAccount } from "@/services/auth";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ChevronLeft,
@@ -11,14 +11,12 @@ import {
   SquareArrowRight,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
-  const router = useRouter();
-
+  const { mutateAsync: createAccount } = useRegister();
   const {
     register,
     setError,
@@ -30,17 +28,11 @@ export default function Register() {
 
   async function handleForm(data: RegisterSchema) {
     try {
-      const response = await createAccount(data);
-      const result = await response.json();
-
-      if (response.status === 400) {
-        setError("email", { message: result.message });
-        return;
-      }
-
-      router.push("/");
+      await createAccount(data);
     } catch (error) {
-      console.log(error);
+      if (error instanceof Error) {
+        setError("email", { message: error.message });
+      }
     }
   }
 
