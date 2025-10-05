@@ -26,6 +26,18 @@ export async function fetchProducts() {
   }
 }
 
+export async function getProduct(productId: string) {
+  try {
+    const res = await api.get(`/products/${productId}`)
+    return res.data
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      throw new Error(error.response?.data.message);
+    }
+    throw error;
+  }
+}
+
 export async function findProduct(productId: string) {
   try {
     const res = await api.get(`/products/${productId}`);

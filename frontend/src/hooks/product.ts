@@ -20,6 +20,13 @@ export function useProducts(
   });
 }
 
+export function useGetProduct(productId: string) {
+  return useQuery({
+    queryKey: ["product"],
+    queryFn: () => productApi.getProduct(productId),
+  });
+}
+
 export function useNewProduct() {
   const queryClient = useQueryClient();
   const router = useRouter();

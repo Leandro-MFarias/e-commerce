@@ -30,7 +30,10 @@ export function ProductItem({
             >
               <ShoppingCart />
               {showCartId === product.id && (
-                <PackageCheck className="animate-float-cart absolute text-3xl text-orange-600" size={36} />
+                <PackageCheck
+                  className="animate-float-cart absolute text-3xl text-orange-600"
+                  size={36}
+                />
               )}
             </button>
           </div>

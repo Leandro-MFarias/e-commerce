@@ -144,7 +144,7 @@ export function Header() {
               Meus pedidos
             </button>
             {user?.role === "ADMIN" && (
-              <Link href={"/admin-page"}>
+              <Link href={"/dashboard"}>
                 <button
                   className={`cursor-pointer text-xl text-zinc-200 transition duration-150 ease-in hover:scale-105`}
                 >
