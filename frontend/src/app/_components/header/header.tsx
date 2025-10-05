@@ -50,7 +50,7 @@ export function Header() {
               </button>
               <div
                 onMouseDown={(e) => e.preventDefault()}
-                className={`shadow-shape absolute -bottom-28 -left-12 flex w-[120px] flex-col items-start space-y-3 rounded-sm bg-neutral-900 px-2 py-2 ${menuDrop ? "block" : "hidden"}`}
+                className={`shadow-shape absolute -bottom-28 -left-12 z-50 flex w-[120px] flex-col items-start space-y-3 rounded-sm bg-neutral-900 px-2 py-2 ${menuDrop ? "block" : "hidden"}`}
               >
                 <button
                   className={`cursor-pointer text-sm text-zinc-200 transition duration-150 ease-in hover:scale-105`}
