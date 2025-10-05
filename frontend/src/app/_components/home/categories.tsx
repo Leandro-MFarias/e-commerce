@@ -47,7 +47,7 @@ export function Categories() {
   useProductsToShow(id!);
 
   return (
-    <ScrollArea className="pb-2">
+    <ScrollArea className="pb-2" type="always">
       <nav className="shadow-shape flex justify-center bg-neutral-900 px-2 py-2 md:mx-auto md:mt-10 md:max-w-7xl md:rounded-full">
         <ul className="flex items-center space-x-2 sm:space-x-4 md:space-x-20">
           <li>
