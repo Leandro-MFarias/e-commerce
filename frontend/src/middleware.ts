@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
-  matcher: ["/profile", "/dashboard/:path*", "/cart"],
+  matcher: ["/profile", "/dashboard", "/cart"],
 };
 
 export async function middleware(req: NextRequest) {
