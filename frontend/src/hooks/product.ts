@@ -35,7 +35,7 @@ export function useNewProduct() {
     mutationFn: productApi.createProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
-      router.push("/admin-page");
+      router.push("/dashboard");
     },
   });
 }
@@ -71,7 +71,7 @@ export function useUpdateProduct() {
     mutationFn: productApi.updateProduct,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
-      router.push("/admin-page");
+      router.push("/dashboard");
     },
   });
 }
