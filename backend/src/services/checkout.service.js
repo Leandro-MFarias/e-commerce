@@ -53,9 +53,9 @@ export async function checkout(userId) {
       orderId: order.id,
     };
   } catch (error) {
-    console.error("❌ Mercado Pago error:", error);
+    console.error("❌ Mercado Pago error: ", error);
     if (error.cause) {
-      console.error("Causa detalhada:", error.cause);
+      console.error("Causa detalhada: ", error.cause);
     }
     throw error;
   }
