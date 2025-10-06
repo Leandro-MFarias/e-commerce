@@ -52,11 +52,13 @@ export function Header() {
                 onMouseDown={(e) => e.preventDefault()}
                 className={`shadow-shape absolute -bottom-28 -left-12 z-50 flex w-[120px] flex-col items-start space-y-3 rounded-sm bg-neutral-900 px-2 py-2 ${menuDrop ? "block" : "hidden"}`}
               >
-                <button
-                  className={`cursor-pointer text-sm text-zinc-200 transition duration-150 ease-in hover:scale-105`}
-                >
-                  Meus pedidos
-                </button>
+                <Link href={"/orders"}>
+                  <button
+                    className={`cursor-pointer text-sm text-zinc-200 transition duration-150 ease-in hover:scale-105`}
+                  >
+                    Meus pedidos
+                  </button>
+                </Link>
                 {user.role === "ADMIN" && (
                   <Link href={"/dashboard"}>
                     <button
