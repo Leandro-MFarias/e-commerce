@@ -4,7 +4,7 @@ export const productSchema = z4.object({
   name: z4.string().min(2, "Campo obrigatório"),
   description: z4.string().min(2, "Campo obrigatório"),
   categories: z4.array(z4.string()).min(1, "Pelo menos uma categoria"),
-  price: z4.number().min(4, "Digite um valor válido"),
+  price: z4.number().min(1, "Digite um valor válido"),
   stock: z4.number().min(1, "Estoque mínimo é 1"),
   imageUrl: z4
     .any()
