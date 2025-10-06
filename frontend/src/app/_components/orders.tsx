@@ -33,7 +33,9 @@ export function Orders() {
   return (
     <div>
       {orders.length === 0 ? (
-        <div>Você não tem nenhum Pedido</div>
+        <div className="mt-20 flex justify-center text-3xl">
+          Você não tem nenhum Pedido!
+        </div>
       ) : (
         <div>
           {orders.map((order: Order) => (
