@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const isProduction = process.env.NODE_ENV === "production"
+const isProduction = process.env.NODE_ENV === "production";
 
 function getSecret() {
   if (!process.env.JWT_SECRET) {
@@ -21,7 +21,7 @@ export function createSessionCookies(res, user) {
 
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
-    sameSite: "None",
+    sameSite: isProduction ? "None" : "Lax",
     secure: isProduction,
     path: "/",
     maxAge: 7 * 24 * 60 * 60 * 1000,
@@ -35,7 +35,7 @@ export function decodedToken(token) {
 export function logoutSession(req, res) {
   res.cookie("accessToken", null, {
     httpOnly: true,
-    sameSite: "None",
+    sameSite: isProduction ? "None" : "Lax",
     secure: isProduction,
     path: "/",
     maxAge: 0,

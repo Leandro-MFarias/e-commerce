@@ -19,8 +19,8 @@ model User {
   resetToken       String?
   resetTokenExpire DateTime?
 
-  orders    Order[]
-  cartItems CartItem[]
+  orders           Order[]
+  cartItems        CartItem[]
 }
 
 model Category {

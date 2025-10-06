@@ -7,9 +7,11 @@ import { TotalPrice } from "@/utils/totalPrice";
 import { CartItems } from "../_components/cart/cartItems";
 import { useCartItems } from "@/hooks/cart";
 import { ProtectedPage } from "../_components/protectedPage";
+import { useCheckout } from "@/hooks/useCheckout";
 
 export default function CartPage() {
   const { data: products, isLoading, isFetching } = useCartItems();
+  const { mutate: checkout, isPending } = useCheckout();
 
   if (isLoading || isFetching) {
     return (
@@ -17,6 +19,17 @@ export default function CartPage() {
         <Loader2 className="animate-spin" size={60} />
       </div>
     );
+  }
+
+  function handleCheckout() {
+    checkout(undefined, {
+      onSuccess: (data) => {
+        window.location.href = data.checkoutUrl;
+      },
+      onError: (error) => {
+        alert("Erro ao iniciar o pagamento: " + (error as Error).message);
+      },
+    });
   }
 
   return (
@@ -44,8 +57,12 @@ export default function CartPage() {
                 </div>
               </div>
 
-              <button className="w-full rounded-md bg-orange-500 py-3">
-                Continuar
+              <button
+                onClick={handleCheckout}
+                disabled={isPending}
+                className="w-full cursor-pointer rounded-md bg-orange-500 py-3 transition duration-150 ease-in hover:bg-orange-600"
+              >
+                {isPending ? "Redirecionando.." : "Finalizar compra"}
               </button>
             </div>
           </div>
