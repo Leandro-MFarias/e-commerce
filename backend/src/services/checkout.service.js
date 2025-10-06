@@ -37,6 +37,18 @@ export async function checkout(userId) {
   try {
     const body = {
       items,
+      payer: {
+        name: "Fulano Silva",
+        email: "test_user_123@test.com",
+        identification: {
+          type: "CPF",
+          number: "12345678909", // CPF de teste (ver abaixo)
+        },
+        phone: {
+          area_code: "11",
+          number: "999999999",
+        },
+      },
       back_urls: {
         success: `${process.env.FRONTEND_URL}/success`,
         failure: `${process.env.FRONTEND_URL}/failure`,
@@ -47,12 +59,7 @@ export async function checkout(userId) {
       metadata: { userId: String(userId), orderId: String(order.id) },
     };
 
-    console.log("📦 Enviando body para Mercado Pago:");
-    console.log(JSON.stringify(body, null, 2));
-
     const result = await preference.create({ body });
-
-    console.log("✅ Preference criada com sucesso:", result);
 
     return {
       checkoutUrl: result.init_point,
