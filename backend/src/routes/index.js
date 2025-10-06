@@ -7,6 +7,7 @@ import categoriesRoutes from "./category.routes.js";
 import cartRoutes from "./cart.routes.js";
 import checkoutRoutes from "./checkout.routes.js";
 import webhookRoutes from "./webhook.routes.js";
+import orderRoutes from "./order.routes.js";
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.use("/categories", categoriesRoutes);
 router.use("/cart", auth, cartRoutes);
 router.use("/checkout", auth, checkoutRoutes);
 router.use("/webhook", webhookRoutes);
+router.use("/orders", auth, orderRoutes);
 
 export default router;
